@@ -13,7 +13,7 @@ import { Message } from '../_models/message';
 export class UserService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUsers(page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
@@ -40,7 +40,7 @@ export class UserService {
       params = params.append('Likees', 'true');
     }
 
-    return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params})
+    return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params })
       .pipe(
         map(response => {
           paginatedResult.result = response.body;
@@ -84,7 +84,7 @@ export class UserService {
       params = params.append('pageSize', itemsPerPage);
     }
 
-    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {observe: 'response', params})
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', { observe: 'response', params })
       .pipe(
         map(response => {
           paginatedResult.result = response.body;
@@ -112,5 +112,9 @@ export class UserService {
   markAsRead(userId: number, messageId: number) {
     this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId + '/read', {})
       .subscribe();
+  }
+
+  userExists(userName: string) {
+    return this.http.get<boolean>(`${this.baseUrl}Users/CheckUser/${userName}`);
   }
 }
