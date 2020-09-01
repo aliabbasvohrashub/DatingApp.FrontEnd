@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
-import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -33,7 +33,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
-import { AuthInterceptor } from './auth-interceptor';
+import { AuthInterceptorProvider } from './auth-interceptor.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -75,28 +75,29 @@ export function tokenGetter() {
         // blacklistedRoutes: ['localhost:5000/api/auth']
         whitelistedDomains: ['localhost:44350'],
         blacklistedRoutes: ['localhost:44350/api/auth']
-        
+
       }
     })
   ],
   providers: [
-      AuthService,
-      ErrorInterceptorProvider,
-      AlertifyService,
-      AuthGuard,
-      UserService,
-      MemberDetailResolver,
-      MemberListResolver,
-      MemberEditResolver,
-      PreventUnsavedChanges,
-      ListsResolver,
-      MessagesResolver 
-      ,{
-        provide:HTTP_INTERCEPTORS,
-        useClass:AuthInterceptor,
-        multi:true
-      }
-    ],
+    AuthService,
+    ErrorInterceptorProvider,
+    AlertifyService,
+    AuthGuard,
+    UserService,
+    MemberDetailResolver,
+    MemberListResolver,
+    MemberEditResolver,
+    PreventUnsavedChanges,
+    ListsResolver,
+    MessagesResolver,
+    AuthInterceptorProvider
+    // , {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
